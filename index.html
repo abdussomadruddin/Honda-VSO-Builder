@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="ms">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Honda VSO Builder</title>
+    <link rel="stylesheet" href="src/styles.css" />
+    <script defer src="public/pdf-lib.min.js"></script>
+    <script defer src="public/lucide.min.js"></script>
+    <script defer src="src/app.js"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark">H</span>
+        <div>
+          <h1>Honda VSO Builder</h1>
+          <p>PDF VSO dan WhatsApp profiling</p>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button type="button" class="button quiet" id="sampleBtn">
+          <i data-lucide="refresh-cw"></i>
+          <span>Contoh</span>
+        </button>
+        <button type="button" class="button quiet" id="clearBtn">
+          <i data-lucide="eraser"></i>
+          <span>Kosongkan</span>
+        </button>
+        <button type="button" class="button primary" id="generateBtn">
+          <i data-lucide="file-check-2"></i>
+          <span>Jana PDF</span>
+        </button>
+        <a class="button success disabled" id="downloadBtn" aria-disabled="true">
+          <i data-lucide="download"></i>
+          <span>Download</span>
+        </a>
+      </div>
+    </header>
+
+    <main class="app-shell">
+      <form class="editor" id="vsoForm">
+        <section class="form-section">
+          <div class="section-heading">
+            <h2>Customer</h2>
+          </div>
+          <div class="field-grid">
+            <label>
+              <span>Tarikh</span>
+              <input type="date" name="bookingDate" id="bookingDate" />
+            </label>
+            <label>
+              <span>Nama customer</span>
+              <input type="text" name="customerName" id="customerName" autocomplete="name" />
+            </label>
+            <label>
+              <span>NRIC / Passport</span>
+              <input type="text" name="nric" id="nric" inputmode="numeric" />
+            </label>
+            <label>
+              <span>H/P</span>
+              <input type="tel" name="mobilePhone" id="mobilePhone" autocomplete="tel" />
+            </label>
+            <label>
+              <span>Home</span>
+              <input type="tel" name="homePhone" id="homePhone" />
+            </label>
+            <label>
+              <span>Office</span>
+              <input type="tel" name="officePhone" id="officePhone" />
+            </label>
+            <label class="span-2">
+              <span>Alamat</span>
+              <textarea name="address" id="address" rows="3"></textarea>
+            </label>
+          </div>
+        </section>
+
+        <section class="form-section">
+          <div class="section-heading">
+            <h2>Kenderaan</h2>
+          </div>
+          <div class="field-grid">
+            <label>
+              <span>Model</span>
+              <input type="text" name="model" id="model" list="modelOptions" />
+            </label>
+            <label>
+              <span>Sales type</span>
+              <select name="salesType" id="salesType">
+                <option value=""></option>
+                <option>NON-PANEL HIRE PURCHASE</option>
+                <option>PANEL HIRE PURCHASE</option>
+                <option>CASH</option>
+              </select>
+            </label>
+            <label>
+              <span>Variant</span>
+              <input type="text" name="variant" id="variant" />
+            </label>
+            <label>
+              <span>Warna</span>
+              <input type="text" name="colour" id="colour" />
+            </label>
+            <label>
+              <span>Estimated delivery</span>
+              <input type="text" name="estimatedDelivery" id="estimatedDelivery" />
+            </label>
+            <label>
+              <span>Reference dealer</span>
+              <input type="text" name="referenceDealer" id="referenceDealer" />
+            </label>
+            <label>
+              <span>Chassis no.</span>
+              <input type="text" name="chassisNo" id="chassisNo" />
+            </label>
+            <label>
+              <span>Engine no.</span>
+              <input type="text" name="engineNo" id="engineNo" />
+            </label>
+          </div>
+          <datalist id="modelOptions">
+            <option value="HONDA CITY"></option>
+            <option value="HONDA CITY HATCHBACK"></option>
+            <option value="HONDA CIVIC"></option>
+            <option value="HONDA HR-V"></option>
+            <option value="HONDA CR-V"></option>
+            <option value="HONDA WR-V"></option>
+          </datalist>
+        </section>
+
+        <section class="form-section">
+          <div class="section-heading">
+            <h2>Harga</h2>
+            <output id="calculatedTotal">RM 0.00</output>
+          </div>
+          <div class="field-grid">
+            <label>
+              <span>Selling price</span>
+              <input type="number" name="sellingPrice" id="sellingPrice" min="0" step="0.01" inputmode="decimal" />
+            </label>
+            <label>
+              <span>Discount</span>
+              <input type="number" name="discount" id="discount" min="0" step="0.01" inputmode="decimal" />
+            </label>
+            <label>
+              <span>Number plate</span>
+              <input type="number" name="numberPlate" id="numberPlate" min="0" step="0.01" inputmode="decimal" />
+            </label>
+            <label>
+              <span>Road tax</span>
+              <input type="number" name="roadTax" id="roadTax" min="0" step="0.01" inputmode="decimal" />
+            </label>
+            <label>
+              <span>Registration fee</span>
+              <input type="number" name="registrationFee" id="registrationFee" min="0" step="0.01" inputmode="decimal" />
+            </label>
+            <label>
+              <span>Ownership fee</span>
+              <input type="number" name="ownershipFee" id="ownershipFee" min="0" step="0.01" inputmode="decimal" />
+            </label>
+            <label>
+              <span>Accessories</span>
+              <input type="number" name="accessories" id="accessories" min="0" step="0.01" inputmode="decimal" />
+            </label>
+            <label>
+              <span>Misc sales</span>
+              <input type="number" name="miscSales" id="miscSales" min="0" step="0.01" inputmode="decimal" />
+            </label>
+            <label>
+              <span>Insurance</span>
+              <input type="number" name="insurance" id="insurance" min="0" step="0.01" inputmode="decimal" />
+            </label>
+            <label>
+              <span>NCD %</span>
+              <input type="number" name="ncd" id="ncd" min="0" max="100" step="0.01" inputmode="decimal" />
+            </label>
+            <label>
+              <span>Total / OTR override</span>
+              <input type="number" name="totalAmount" id="totalAmount" min="0" step="0.01" inputmode="decimal" />
+            </label>
+            <label>
+              <span>Booking fee paid</span>
+              <input type="number" name="bookingFeePaid" id="bookingFeePaid" min="0" step="0.01" inputmode="decimal" />
+            </label>
+            <label>
+              <span>Loan / outstanding</span>
+              <input type="number" name="totalOutstanding" id="totalOutstanding" min="0" step="0.01" inputmode="decimal" />
+            </label>
+            <label>
+              <span>Cheque / ref no.</span>
+              <input type="text" name="paymentRef" id="paymentRef" />
+            </label>
+          </div>
+        </section>
+
+        <section class="form-section">
+          <div class="section-heading">
+            <h2>Profiling loan</h2>
+          </div>
+          <div class="field-grid">
+            <label>
+              <span>Bank target</span>
+              <input type="text" name="bankTarget" id="bankTarget" />
+            </label>
+            <label>
+              <span>Tenure</span>
+              <input type="text" name="tenure" id="tenure" />
+            </label>
+            <label>
+              <span>Margin %</span>
+              <input type="number" name="margin" id="margin" min="0" max="100" step="0.01" inputmode="decimal" />
+            </label>
+            <label>
+              <span>Downpayment</span>
+              <input type="number" name="downPayment" id="downPayment" min="0" step="0.01" inputmode="decimal" />
+            </label>
+            <label>
+              <span>Pekerjaan</span>
+              <input type="text" name="occupation" id="occupation" />
+            </label>
+            <label>
+              <span>Company</span>
+              <input type="text" name="employer" id="employer" />
+            </label>
+            <label>
+              <span>Income bulanan</span>
+              <input type="number" name="monthlyIncome" id="monthlyIncome" min="0" step="0.01" inputmode="decimal" />
+            </label>
+            <label>
+              <span>Commitment</span>
+              <input type="number" name="monthlyCommitment" id="monthlyCommitment" min="0" step="0.01" inputmode="decimal" />
+            </label>
+            <label class="span-2">
+              <span>Dokumen</span>
+              <input type="text" name="documents" id="documents" />
+            </label>
+            <label class="span-2">
+              <span>Remark</span>
+              <textarea name="remarks" id="remarks" rows="3"></textarea>
+            </label>
+          </div>
+        </section>
+
+        <section class="form-section">
+          <div class="section-heading">
+            <h2>Dealer</h2>
+          </div>
+          <div class="field-grid">
+            <label>
+              <span>Sales advisor</span>
+              <input type="text" name="salesAdvisorName" id="salesAdvisorName" />
+            </label>
+            <label>
+              <span>SA NRIC</span>
+              <input type="text" name="salesAdvisorNric" id="salesAdvisorNric" />
+            </label>
+            <label>
+              <span>Sales manager</span>
+              <input type="text" name="salesManagerName" id="salesManagerName" />
+            </label>
+            <label>
+              <span>Manager NRIC</span>
+              <input type="text" name="salesManagerNric" id="salesManagerNric" />
+            </label>
+            <label class="file-input span-2">
+              <span>Template PDF</span>
+              <input type="file" id="templateFile" accept="application/pdf" />
+            </label>
+            <label class="check-row span-2">
+              <input type="checkbox" name="clearCustomerSignature" id="clearCustomerSignature" checked />
+              <span>Padam tandatangan customer lama</span>
+            </label>
+          </div>
+        </section>
+      </form>
+
+      <aside class="output-panel">
+        <section class="preview-tool">
+          <div class="tool-heading">
+            <h2>Preview PDF</h2>
+            <span id="pdfStatus">Belum dijana</span>
+          </div>
+          <div class="pdf-frame">
+            <iframe id="pdfPreview" title="Preview PDF VSO"></iframe>
+            <div class="empty-state" id="pdfEmpty">
+              <i data-lucide="file-text"></i>
+              <span>Jana PDF untuk preview</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="whatsapp-tool">
+          <div class="tool-heading">
+            <h2>WhatsApp profiling</h2>
+            <button type="button" class="icon-button" id="copyWhatsappBtn" title="Copy WhatsApp">
+              <i data-lucide="copy"></i>
+            </button>
+          </div>
+          <textarea id="whatsappText" rows="18" spellcheck="false"></textarea>
+          <div class="whatsapp-actions">
+            <a class="button neutral" id="openWhatsappBtn" target="_blank" rel="noreferrer">
+              <i data-lucide="send"></i>
+              <span>Buka WhatsApp</span>
+            </a>
+            <span id="copyStatus"></span>
+          </div>
+        </section>
+      </aside>
+    </main>
+  </body>
+</html>

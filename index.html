@@ -4,6 +4,16 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Honda VSO Builder</title>
+    <meta name="theme-color" content="#c8102e" />
+    <meta name="application-name" content="Honda VSO" />
+    <meta name="apple-mobile-web-app-title" content="Honda VSO" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <link rel="manifest" href="/public/manifest.webmanifest" />
+    <link rel="icon" href="/public/icons/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/public/icons/favicon-32x32.png" sizes="32x32" type="image/png" />
+    <link rel="icon" href="/public/icons/favicon-16x16.png" sizes="16x16" type="image/png" />
+    <link rel="apple-touch-icon" href="/public/icons/apple-touch-icon.png" />
     <link rel="stylesheet" href="src/styles.css" />
     <script defer src="public/pdf-lib.min.js"></script>
     <script defer src="public/lucide.min.js"></script>
@@ -12,7 +22,7 @@
   <body>
     <header class="topbar">
       <div class="brand">
-        <span class="brand-mark">H</span>
+        <img class="brand-mark" src="/public/icons/icon.svg" alt="" aria-hidden="true" />
         <div>
           <h1>Honda VSO Builder</h1>
           <p>PDF VSO dan WhatsApp profiling</p>

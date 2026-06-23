@@ -53,14 +53,12 @@ body {
 }
 
 .brand-mark {
-  display: grid;
   width: 42px;
   height: 42px;
-  place-items: center;
-  color: #ffffff;
-  background: var(--red);
+  display: block;
+  flex: 0 0 auto;
+  object-fit: cover;
   border-radius: 8px;
-  font-weight: 800;
 }
 
 h1,

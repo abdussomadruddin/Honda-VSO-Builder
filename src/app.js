@@ -173,35 +173,47 @@ const priceRows = {
 };
 
 const fillLineSegments = [
-  { x1: 512, x2: 556, y: 727.6, kind: "dash" },
-  { x1: 118, x2: 252, y: 698.8 },
-  { x1: 118, x2: 185, y: 682.2 },
-  { x1: 118, x2: 240, y: 666.4, kind: "dash" },
-  { x1: 117, x2: 263, y: 653.4, kind: "dash" },
-  { x1: 118, x2: 176, y: 596.8 },
-  { x1: 118, x2: 230, y: 584.0 },
-  { x1: 118, x2: 249, y: 571.3 },
-  { x1: 118, x2: 140, y: 558.5 },
-  { x1: 437, x2: 568, y: 596.8 },
-  { x1: 294, x2: 342, y: priceRows.sellingPrice.y + 0.4 },
-  { x1: 320, x2: 340, y: priceRows.discount.y + 0.4 },
-  { x1: 294, x2: 342, y: priceRows.subtotal.y + 0.4 },
-  { x1: 315, x2: 340, y: priceRows.numberPlate.y + 0.4 },
-  { x1: 311, x2: 341, y: priceRows.roadTax.y + 0.4 },
-  { x1: 310, x2: 340, y: priceRows.registrationFee.y + 0.4 },
-  { x1: 315, x2: 340, y: priceRows.ownershipFee.y + 0.4 },
-  { x1: 305, x2: 341, y: priceRows.accessories.y + 0.4 },
-  { x1: 314, x2: 339, y: priceRows.miscSales.y + 0.4 },
-  { x1: 303, x2: 340, y: priceRows.insurance.y + 0.4 },
-  { x1: 108, x2: 124, y: 398.5 },
-  { x1: 292, x2: 340, y: priceRows.totalAmount.y - 0.9, kind: "double" },
-  { x1: 320, x2: 340, y: priceRows.bookingFeePaid.y + 0.4 },
-  { x1: 295, x2: 342, y: priceRows.totalOutstanding.y - 0.9, kind: "double" },
-  { x1: 128, x2: 146, y: 291.9, kind: "dash" },
-  { x1: 277, x2: 383, y: 151.8, kind: "dash" },
-  { x1: 278, x2: 326, y: 136.6, kind: "dash" },
-  { x1: 466, x2: 539, y: 151.8, kind: "dash" },
-  { x1: 467, x2: 515, y: 136.6, kind: "dash" },
+  { x1: 493.75, x2: 575.75, y: 727.5, kind: "rectDash" },
+  { x1: 493.75, x2: 575.75, y: 698.0, kind: "rectDash" },
+  { x1: 493.7, x2: 575.7, y: 686.5, kind: "rectDash" },
+  { x1: 493.7, x2: 575.7, y: 674.5, kind: "rectDash" },
+  { x1: 119.75, x2: 417.75, y: 666.5, kind: "rectDash" },
+  { x1: 118.75, x2: 417.75, y: 653.1, kind: "rectDash" },
+  { x1: 118.0, x2: 417.0, y: 640.9, kind: "rectDash" },
+  { x1: 118.75, x2: 417.75, y: 623.7, kind: "rectDash" },
+  { x1: 118.8, x2: 417.0, y: 699.8, kind: "vectorDash" },
+  { x1: 118.8, x2: 417.0, y: 684.2, kind: "vectorDash" },
+  { x1: 118.9, x2: 337.9, y: 595.4, kind: "vectorDash" },
+  { x1: 437.6, x2: 570.45, y: 595.4, kind: "vectorDash" },
+  { x1: 118.65, x2: 307.3, y: 583.4, kind: "vectorDash" },
+  { x1: 118.65, x2: 337.9, y: 572.0, kind: "vectorDash" },
+  { x1: 437.85, x2: 577.2, y: 582.2, kind: "vectorDash" },
+  { x1: 437.85, x2: 577.2, y: 570.2, kind: "vectorDash" },
+  { x1: 118.65, x2: 337.9, y: 558.8, kind: "vectorDash" },
+  { x1: 440.6, x2: 580.2, y: 556.8, kind: "vectorDash" },
+  { x1: 79.9, x2: 150.95, y: 400.4, kind: "vectorDash" },
+  { x1: 217.65, x2: 339.95, y: 521.0, kind: "vectorDash" },
+  { x1: 219.7, x2: 337.9, y: 509.0, kind: "vectorDash" },
+  { x1: 217.9, x2: 339.7, y: 496.2, kind: "vectorDash" },
+  { x1: 219.6, x2: 338.0, y: 484.65, kind: "vectorDash" },
+  { x1: 218.5, x2: 339.0, y: 472.2, kind: "vectorDash" },
+  { x1: 219.45, x2: 338.15, y: 460.2, kind: "vectorDash" },
+  { x1: 219.6, x2: 338.0, y: 448.2, kind: "vectorDash" },
+  { x1: 219.1, x2: 338.5, y: 436.2, kind: "vectorDash" },
+  { x1: 222.7, x2: 336.8, y: 424.05, kind: "vectorDash" },
+  { x1: 219.1, x2: 338.5, y: 412.05, kind: "vectorDash" },
+  { x1: 218.0, x2: 337.8, y: 387.35, kind: "solid" },
+  { x1: 218.0, x2: 337.8, y: 386.15, kind: "solid" },
+  { x1: 219.7, x2: 337.9, y: 374.25, kind: "vectorDash" },
+  { x1: 218.15, x2: 340.4, y: 363.0, kind: "solid" },
+  { x1: 218.15, x2: 340.4, y: 361.8, kind: "solid" },
+  { x1: 83.0, x2: 192.0, y: 287.5, kind: "rectDash" },
+  { x1: 340.0, x2: 449.0, y: 287.5, kind: "rectDash" },
+  { x1: 278.75, x2: 385.75, y: 154.0, kind: "rectDash" },
+  { x1: 467.75, x2: 574.75, y: 154.0, kind: "rectDash" },
+  { x1: 279.0, x2: 386.0, y: 138.0, kind: "rectDash" },
+  { x1: 468.8, x2: 575.8, y: 138.2, kind: "rectDash" },
+  { x1: 32.0, x2: 191.0, y: 173.9, kind: "rectDash", group: "customerSignature" },
 ];
 
 let currentPdfUrl = "";
@@ -284,7 +296,7 @@ async function generatePdf() {
     const pricing = resolvePricing(data);
 
     cleanFirstPage(page, data);
-    restoreFillLines(page);
+    restoreFillLines(page, data);
     drawCustomer(page, regular, data);
     drawVehicle(page, regular, data);
     drawPricing(page, regular, bold, data, pricing);
@@ -360,9 +372,11 @@ function cleanFirstPage(page, data) {
   }
 }
 
-function restoreFillLines(page) {
+function restoreFillLines(page, data) {
   fillLineSegments.forEach((line) => {
-    drawFillLine(page, line.x1, line.y, line.x2, line.kind);
+    if (line.group === "customerSignature" && !data.clearCustomerSignature) return;
+    coverFillLine(page, line);
+    drawFillLine(page, line);
   });
 }
 
@@ -383,9 +397,6 @@ function drawCustomer(page, font, data) {
   drawFit(page, upper(data.officePhone), 494, 687, 80, { font, size: 8.8 });
   drawFit(page, upper(data.mobilePhone), 494, 674, 80, { font, size: 8.8 });
 
-  if (data.clearCustomerSignature) {
-    drawDashedLine(page, 32, 173.5, 198, 1);
-  }
 }
 
 function drawVehicle(page, font, data) {
@@ -515,53 +526,36 @@ function cover(page, x, y, width, height) {
   });
 }
 
-function drawDashedLine(page, x1, y, x2, thickness) {
-  const dash = 3.2;
-  const gap = 2;
-  for (let x = x1; x < x2; x += dash + gap) {
-    page.drawLine({
-      start: { x, y },
-      end: { x: Math.min(x + dash, x2), y },
-      thickness,
-      color: PDFLib.rgb(0, 0, 0),
-    });
-  }
+function coverFillLine(page, line) {
+  const height = line.kind === "rectDash" ? 1.8 : 2.2;
+  cover(page, line.x1 - 0.4, line.y - height / 2, line.x2 - line.x1 + 0.8, height);
 }
 
-function drawFillLine(page, x1, y, x2, kind = "dot") {
-  if (kind === "double") {
-    drawDoubleFillLine(page, x1, y, x2);
+function drawFillLine(page, line) {
+  if (line.kind === "rectDash") {
+    drawRectDashLine(page, line.x1, line.y, line.x2);
     return;
   }
 
-  if (kind === "dash") {
-    drawSegmentedLine(page, x1, y, x2, { dash: 3.2, gap: 2, thickness: 0.55 });
-    return;
-  }
-
-  drawSegmentedLine(page, x1, y, x2, { dash: 1.15, gap: 2.05, thickness: 0.45 });
-}
-
-function drawDoubleFillLine(page, x1, y, x2) {
-  drawSolidLine(page, x1, y, x2, 0.5);
-  drawSolidLine(page, x1, y - 2.0, x2, 0.5);
-}
-
-function drawSolidLine(page, x1, y, x2, thickness) {
   page.drawLine({
-    start: { x: x1, y },
-    end: { x: x2, y },
-    thickness,
+    start: { x: line.x1, y: line.y },
+    end: { x: line.x2, y: line.y },
+    thickness: 0.6,
     color: PDFLib.rgb(0, 0, 0),
+    dashArray: line.kind === "vectorDash" ? [1.5, 1.5] : undefined,
+    dashPhase: 0,
   });
 }
 
-function drawSegmentedLine(page, x1, y, x2, options) {
-  for (let x = x1; x < x2; x += options.dash + options.gap) {
-    page.drawLine({
-      start: { x, y },
-      end: { x: Math.min(x + options.dash, x2), y },
-      thickness: options.thickness,
+function drawRectDashLine(page, x1, y, x2) {
+  const dashWidth = 3;
+  const gap = 1;
+  for (let x = x1; x < x2; x += dashWidth + gap) {
+    page.drawRectangle({
+      x,
+      y: y - 0.5,
+      width: Math.min(dashWidth, x2 - x),
+      height: 1,
       color: PDFLib.rgb(0, 0, 0),
     });
   }

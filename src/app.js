@@ -1,4 +1,5 @@
 const TEMPLATE_URL = "public/honda-vso-template.pdf";
+let embeddedTemplateBytesCache = null;
 
 const FIELD_IDS = [
   "bookingDate",
@@ -244,6 +245,7 @@ async function generatePdf() {
   try {
     const templateBytes = await getTemplateBytes();
     const pdfDoc = await PDFLib.PDFDocument.load(templateBytes);
+    keepFirstPageOnly(pdfDoc);
     const page = pdfDoc.getPage(0);
     const regular = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica);
     const bold = await pdfDoc.embedFont(PDFLib.StandardFonts.HelveticaBold);
@@ -262,7 +264,7 @@ async function generatePdf() {
   } catch (error) {
     console.error(error);
     setStatus("PDF gagal dijana", false);
-    alert("PDF gagal dijana. Semak template PDF atau cuba semula.");
+    alert(error.message || "PDF gagal dijana. Semak template PDF atau cuba semula.");
   } finally {
     generateBtn.disabled = false;
   }
@@ -274,11 +276,47 @@ async function getTemplateBytes() {
     return input.files[0].arrayBuffer();
   }
 
-  const response = await fetch(TEMPLATE_URL);
-  if (!response.ok) {
-    throw new Error("Template PDF tidak ditemui.");
+  if (window.location.protocol === "file:") {
+    const embeddedBytes = getEmbeddedTemplateBytes();
+    if (embeddedBytes) return embeddedBytes;
   }
-  return response.arrayBuffer();
+
+  try {
+    const response = await fetch(TEMPLATE_URL);
+    if (!response.ok) {
+      throw new Error("Template PDF tidak ditemui.");
+    }
+    return response.arrayBuffer();
+  } catch (error) {
+    const embeddedBytes = getEmbeddedTemplateBytes();
+    if (embeddedBytes) return embeddedBytes;
+    throw new Error("Template PDF tidak dapat dibaca. Buka melalui app server atau pilih fail template PDF.");
+  }
+}
+
+function getEmbeddedTemplateBytes() {
+  const base64 = window.HONDA_VSO_TEMPLATE_BASE64;
+  if (!base64) return null;
+
+  if (!embeddedTemplateBytesCache) {
+    embeddedTemplateBytesCache = base64ToArrayBuffer(base64);
+  }
+  return embeddedTemplateBytesCache.slice(0);
+}
+
+function base64ToArrayBuffer(base64) {
+  const binary = atob(base64);
+  const bytes = new Uint8Array(binary.length);
+  for (let index = 0; index < binary.length; index += 1) {
+    bytes[index] = binary.charCodeAt(index);
+  }
+  return bytes.buffer;
+}
+
+function keepFirstPageOnly(pdfDoc) {
+  for (let index = pdfDoc.getPageCount() - 1; index > 0; index -= 1) {
+    pdfDoc.removePage(index);
+  }
 }
 
 function cleanFirstPage(page, data) {
@@ -553,6 +591,12 @@ function formatMoney(value) {
 function moneyLabel(value) {
   const formatted = formatMoney(value);
   return formatted ? `RM ${formatted}` : "RM 0.00";
+}
+
+function trimNumber(value) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) return value;
+  return Number.isInteger(number) ? String(number) : String(number).replace(/0+$/, "").replace(/\.$/, "");
 }
 
 function buildFileName(data) {

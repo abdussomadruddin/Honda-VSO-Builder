@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "build": "node build.mjs",
-    "start": "python3 -m http.server 5173"
+    "start": "python3 -m http.server 5173",
+    "test": "node tests/stress-generate.mjs"
   }
 }

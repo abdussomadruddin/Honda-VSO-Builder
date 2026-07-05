@@ -1,7 +1,7 @@
 {
   "name": "Honda VSO Builder",
   "short_name": "Honda VSO",
-  "description": "PDF VSO dan WhatsApp profiling customer.",
+  "description": "PDF VSO customer builder.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

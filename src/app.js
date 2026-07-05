@@ -30,39 +30,11 @@ const FIELD_IDS = [
   "bookingFeePaid",
   "totalOutstanding",
   "paymentRef",
-  "bankTarget",
-  "tenure",
-  "margin",
-  "downPayment",
-  "occupation",
-  "employer",
-  "monthlyIncome",
-  "monthlyCommitment",
-  "documents",
-  "remarks",
   "salesAdvisorName",
   "salesAdvisorNric",
   "salesManagerName",
   "salesManagerNric",
   "clearCustomerSignature",
-];
-
-const MONEY_FIELDS = [
-  "sellingPrice",
-  "discount",
-  "numberPlate",
-  "roadTax",
-  "registrationFee",
-  "ownershipFee",
-  "accessories",
-  "miscSales",
-  "insurance",
-  "totalAmount",
-  "bookingFeePaid",
-  "totalOutstanding",
-  "downPayment",
-  "monthlyIncome",
-  "monthlyCommitment",
 ];
 
 const PRICE_COMPONENT_FIELDS = [
@@ -107,16 +79,6 @@ const SAMPLE_DATA = {
   bookingFeePaid: "0",
   totalOutstanding: "109300",
   paymentRef: "",
-  bankTarget: "",
-  tenure: "9 tahun",
-  margin: "",
-  downPayment: "",
-  occupation: "",
-  employer: "",
-  monthlyIncome: "",
-  monthlyCommitment: "",
-  documents: "IC, lesen, payslip 3 bulan, bank statement 3 bulan, EPF",
-  remarks: "",
   salesAdvisorName: "MUIZZUDDIN NAZMI BIN BAKRI",
   salesAdvisorNric: "990217027833",
   salesManagerName: "NAVINDER KAUR A/P",
@@ -154,16 +116,6 @@ const EMPTY_DATA = {
   bookingFeePaid: "0",
   totalOutstanding: "",
   paymentRef: "",
-  bankTarget: "",
-  tenure: "9 tahun",
-  margin: "",
-  downPayment: "",
-  occupation: "",
-  employer: "",
-  monthlyIncome: "",
-  monthlyCommitment: "",
-  documents: "IC, lesen, payslip 3 bulan, bank statement 3 bulan, EPF",
-  remarks: "",
   salesAdvisorName: "MUIZZUDDIN NAZMI BIN BAKRI",
   salesAdvisorNric: "990217027833",
   salesManagerName: "NAVINDER KAUR A/P",
@@ -249,7 +201,6 @@ function bindEvents() {
   });
 
   document.getElementById("generateBtn").addEventListener("click", generatePdf);
-  document.getElementById("copyWhatsappBtn").addEventListener("click", copyWhatsappText);
 }
 
 function fillForm(data) {
@@ -281,10 +232,6 @@ function refreshDerivedViews() {
   const data = getFormData();
   const pricing = resolvePricing(data);
   document.getElementById("calculatedTotal").textContent = moneyLabel(pricing.total);
-
-  const text = buildWhatsappText(data, pricing);
-  document.getElementById("whatsappText").value = text;
-  document.getElementById("openWhatsappBtn").href = `https://wa.me/?text=${encodeURIComponent(text)}`;
 }
 
 async function generatePdf() {
@@ -446,58 +393,6 @@ function setStatus(message, ready) {
   status.style.background = ready ? "var(--teal-soft)" : "#fff5df";
 }
 
-async function copyWhatsappText() {
-  const textarea = document.getElementById("whatsappText");
-  const status = document.getElementById("copyStatus");
-
-  try {
-    await navigator.clipboard.writeText(textarea.value);
-    status.textContent = "Copied";
-  } catch {
-    textarea.focus();
-    textarea.select();
-    document.execCommand("copy");
-    status.textContent = "Copied";
-  }
-
-  window.setTimeout(() => {
-    status.textContent = "";
-  }, 1800);
-}
-
-function buildWhatsappText(data, pricing) {
-  const car = compact([upper(data.model), upper(data.variant), upper(data.colour)]).join(" / ");
-  const loan = pricing.outstanding;
-  const downPayment = valueOrNull(data.downPayment) ?? (pricing.total !== null && loan !== null ? pricing.total - loan : null);
-  const margin = data.margin !== "" ? `${trimNumber(data.margin)}%` : pricing.total && loan ? `${((loan / pricing.total) * 100).toFixed(1)}%` : "";
-
-  return [
-    "Assalamualaikum banker, mohon profiling customer Honda.",
-    "",
-    `Nama: ${upper(data.customerName)}`,
-    `IC: ${upper(data.nric)}`,
-    `H/P: ${upper(data.mobilePhone)}`,
-    `Alamat: ${oneLine(upper(data.address))}`,
-    "",
-    `Model: ${car}`,
-    `Sales Type: ${upper(data.salesType)}`,
-    `OTR: ${moneyLabel(pricing.total)}`,
-    `Loan Amount: ${moneyLabel(loan)}`,
-    `Downpayment: ${moneyLabel(downPayment)}`,
-    `Margin: ${margin}`,
-    `Tenure: ${data.tenure}`,
-    "",
-    `Pekerjaan: ${upper(data.occupation)}`,
-    `Company: ${upper(data.employer)}`,
-    `Income: ${moneyLabel(valueOrNull(data.monthlyIncome))}`,
-    `Commitment: ${moneyLabel(valueOrNull(data.monthlyCommitment))}`,
-    `Bank target: ${upper(data.bankTarget)}`,
-    `Dokumen: ${data.documents}`,
-    "",
-    `Remark: ${data.remarks}`,
-  ].join("\n");
-}
-
 function resolvePricing(data) {
   const sellingPrice = valueOrNull(data.sellingPrice);
   const discount = valueOrNull(data.discount);
@@ -641,13 +536,6 @@ function upperMultiline(value) {
     .join("\n");
 }
 
-function oneLine(value) {
-  return String(value || "")
-    .replace(/\s*\n+\s*/g, ", ")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
 function valueOrNull(value) {
   if (value === "" || value === null || value === undefined) return null;
   const number = Number(String(value).replace(/,/g, ""));
@@ -665,16 +553,6 @@ function formatMoney(value) {
 function moneyLabel(value) {
   const formatted = formatMoney(value);
   return formatted ? `RM ${formatted}` : "RM 0.00";
-}
-
-function trimNumber(value) {
-  const number = Number(value);
-  if (!Number.isFinite(number)) return value;
-  return Number.isInteger(number) ? String(number) : String(number).replace(/0+$/, "").replace(/\.$/, "");
-}
-
-function compact(values) {
-  return values.filter((value) => String(value || "").trim() !== "");
 }
 
 function buildFileName(data) {

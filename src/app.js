@@ -157,19 +157,19 @@ const pdfTextZones = [
 ];
 
 const priceRows = {
-  sellingPrice: { y: 523.8 },
-  discount: { y: 511.1 },
-  subtotal: { y: 498.3 },
-  numberPlate: { y: 485.7 },
-  roadTax: { y: 472.9 },
-  registrationFee: { y: 460.2 },
-  ownershipFee: { y: 447.5 },
-  accessories: { y: 434.8 },
-  miscSales: { y: 422.1 },
-  insurance: { y: 409.4 },
-  totalAmount: { y: 385.4 },
-  bookingFeePaid: { y: 372.6 },
-  totalOutstanding: { y: 359.9 },
+  sellingPrice: { y: 524.0 },
+  discount: { y: 512.0 },
+  subtotal: { y: 499.2 },
+  numberPlate: { y: 487.7 },
+  roadTax: { y: 475.2 },
+  registrationFee: { y: 463.2 },
+  ownershipFee: { y: 451.2 },
+  accessories: { y: 439.2 },
+  miscSales: { y: 427.1 },
+  insurance: { y: 415.1 },
+  totalAmount: { y: 390.4 },
+  bookingFeePaid: { y: 377.3 },
+  totalOutstanding: { y: 366.0 },
 };
 
 const fillLineSegments = [
@@ -383,32 +383,33 @@ function restoreFillLines(page, data) {
 function drawCustomer(page, font, data) {
   const name = upper(data.customerName);
   const nric = upper(data.nric);
+  const addressBaselines = [669.5, 656.1, 643.9, 626.9];
 
-  drawFit(page, formatDate(data.bookingDate), 513, 730, 62, { font, size: 9, align: "center" });
-  drawFit(page, name, 119, 701, 296, { font, size: 10 });
-  drawFit(page, nric, 119, 684.3, 165, { font, size: 10 });
+  drawFit(page, formatDate(data.bookingDate), 513, 730.5, 62, { font, size: 9, align: "center" });
+  drawFit(page, name, 119, 703, 296, { font, size: 10 });
+  drawFit(page, nric, 119, 687.2, 165, { font, size: 10 });
 
   const addressLines = wrapText(upperMultiline(data.address), font, 8.6, 302, 4);
   addressLines.forEach((line, index) => {
-    drawFit(page, line, 119, 668.5 - index * 13, 302, { font, size: 8.6 });
+    drawFit(page, line, 119, addressBaselines[index], 302, { font, size: 8.6 });
   });
 
-  drawFit(page, upper(data.homePhone), 494, 700, 80, { font, size: 8.8 });
-  drawFit(page, upper(data.officePhone), 494, 687, 80, { font, size: 8.8 });
-  drawFit(page, upper(data.mobilePhone), 494, 674, 80, { font, size: 8.8 });
+  drawFit(page, upper(data.homePhone), 494, 701, 80, { font, size: 8.8 });
+  drawFit(page, upper(data.officePhone), 494, 689.5, 80, { font, size: 8.8 });
+  drawFit(page, upper(data.mobilePhone), 494, 677.5, 80, { font, size: 8.8 });
 
 }
 
 function drawVehicle(page, font, data) {
   drawFit(page, upper(data.model), 119, 598.6, 218, { font, size: 9.2 });
-  drawFit(page, upper(data.variant), 119, 585.7, 218, { font, size: 9.2 });
-  drawFit(page, upper(data.colour), 119, 573, 218, { font, size: 9.2 });
-  drawFit(page, upper(data.estimatedDelivery), 119, 560.2, 218, { font, size: 9.2 });
+  drawFit(page, upper(data.variant), 119, 586.4, 218, { font, size: 9.2 });
+  drawFit(page, upper(data.colour), 119, 575, 218, { font, size: 9.2 });
+  drawFit(page, upper(data.estimatedDelivery), 119, 561.8, 218, { font, size: 9.2 });
 
   drawFit(page, upper(data.salesType), 438, 598.6, 134, { font, size: 8.9 });
-  drawFit(page, upper(data.chassisNo), 438, 585.7, 134, { font, size: 8.9 });
-  drawFit(page, upper(data.engineNo), 438, 573, 134, { font, size: 8.9 });
-  drawFit(page, upper(data.referenceDealer), 438, 560.2, 134, { font, size: 8.9 });
+  drawFit(page, upper(data.chassisNo), 438, 585.2, 134, { font, size: 8.9 });
+  drawFit(page, upper(data.engineNo), 438, 573.2, 134, { font, size: 8.9 });
+  drawFit(page, upper(data.referenceDealer), 438, 559.8, 134, { font, size: 8.9 });
 }
 
 function drawPricing(page, font, bold, data, pricing) {
@@ -424,7 +425,7 @@ function drawPricing(page, font, bold, data, pricing) {
   drawMoney(page, font, valueOrNull(data.insurance), priceRows.insurance.y);
 
   const ncdText = data.ncd === "" ? "" : `${trimNumber(data.ncd)}%`;
-  drawFit(page, ncdText, 84, 400.8, 66, { font, size: 9.2, align: "center" });
+  drawFit(page, ncdText, 84, 403.4, 66, { font, size: 9.2, align: "center" });
 
   drawMoney(page, bold, pricing.total, priceRows.totalAmount.y);
   drawMoney(page, bold, pricing.bookingFeePaid, priceRows.bookingFeePaid.y);
@@ -436,10 +437,10 @@ function drawPricing(page, font, bold, data, pricing) {
 }
 
 function drawDealer(page, font, data) {
-  drawFit(page, upper(data.salesAdvisorName), 267, 154.4, 124, { font, size: 7.1, align: "center" });
-  drawFit(page, upper(data.salesAdvisorNric), 267, 139.2, 124, { font, size: 7.1, align: "center" });
-  drawFit(page, upper(data.salesManagerName), 453, 154.4, 126, { font, size: 7.1, align: "center" });
-  drawFit(page, upper(data.salesManagerNric), 453, 139.2, 126, { font, size: 7.1, align: "center" });
+  drawFit(page, upper(data.salesAdvisorName), 267, 157, 124, { font, size: 7.1, align: "center" });
+  drawFit(page, upper(data.salesAdvisorNric), 267, 141, 124, { font, size: 7.1, align: "center" });
+  drawFit(page, upper(data.salesManagerName), 453, 157, 126, { font, size: 7.1, align: "center" });
+  drawFit(page, upper(data.salesManagerNric), 453, 141, 126, { font, size: 7.1, align: "center" });
 }
 
 function setPdfPreview(blob, data) {

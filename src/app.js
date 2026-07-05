@@ -172,6 +172,38 @@ const priceRows = {
   totalOutstanding: { y: 359.9 },
 };
 
+const fillLineSegments = [
+  { x1: 512, x2: 556, y: 727.6, kind: "dash" },
+  { x1: 118, x2: 252, y: 698.8 },
+  { x1: 118, x2: 185, y: 682.2 },
+  { x1: 118, x2: 240, y: 666.4, kind: "dash" },
+  { x1: 117, x2: 263, y: 653.4, kind: "dash" },
+  { x1: 118, x2: 176, y: 596.8 },
+  { x1: 118, x2: 230, y: 584.0 },
+  { x1: 118, x2: 249, y: 571.3 },
+  { x1: 118, x2: 140, y: 558.5 },
+  { x1: 437, x2: 568, y: 596.8 },
+  { x1: 294, x2: 342, y: priceRows.sellingPrice.y + 0.4 },
+  { x1: 320, x2: 340, y: priceRows.discount.y + 0.4 },
+  { x1: 294, x2: 342, y: priceRows.subtotal.y + 0.4 },
+  { x1: 315, x2: 340, y: priceRows.numberPlate.y + 0.4 },
+  { x1: 311, x2: 341, y: priceRows.roadTax.y + 0.4 },
+  { x1: 310, x2: 340, y: priceRows.registrationFee.y + 0.4 },
+  { x1: 315, x2: 340, y: priceRows.ownershipFee.y + 0.4 },
+  { x1: 305, x2: 341, y: priceRows.accessories.y + 0.4 },
+  { x1: 314, x2: 339, y: priceRows.miscSales.y + 0.4 },
+  { x1: 303, x2: 340, y: priceRows.insurance.y + 0.4 },
+  { x1: 108, x2: 124, y: 398.5 },
+  { x1: 292, x2: 340, y: priceRows.totalAmount.y - 0.9, kind: "double" },
+  { x1: 320, x2: 340, y: priceRows.bookingFeePaid.y + 0.4 },
+  { x1: 295, x2: 342, y: priceRows.totalOutstanding.y - 0.9, kind: "double" },
+  { x1: 128, x2: 146, y: 291.9, kind: "dash" },
+  { x1: 277, x2: 383, y: 151.8, kind: "dash" },
+  { x1: 278, x2: 326, y: 136.6, kind: "dash" },
+  { x1: 466, x2: 539, y: 151.8, kind: "dash" },
+  { x1: 467, x2: 515, y: 136.6, kind: "dash" },
+];
+
 let currentPdfUrl = "";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -252,6 +284,7 @@ async function generatePdf() {
     const pricing = resolvePricing(data);
 
     cleanFirstPage(page, data);
+    restoreFillLines(page);
     drawCustomer(page, regular, data);
     drawVehicle(page, regular, data);
     drawPricing(page, regular, bold, data, pricing);
@@ -327,22 +360,28 @@ function cleanFirstPage(page, data) {
   }
 }
 
+function restoreFillLines(page) {
+  fillLineSegments.forEach((line) => {
+    drawFillLine(page, line.x1, line.y, line.x2, line.kind);
+  });
+}
+
 function drawCustomer(page, font, data) {
   const name = upper(data.customerName);
   const nric = upper(data.nric);
 
-  drawFit(page, formatDate(data.bookingDate), 513, 730, 62, { font, size: 9, align: "center", clear: true });
-  drawFit(page, name, 119, 701, 296, { font, size: 10, clear: true });
-  drawFit(page, nric, 119, 684.3, 165, { font, size: 10, clear: true });
+  drawFit(page, formatDate(data.bookingDate), 513, 730, 62, { font, size: 9, align: "center" });
+  drawFit(page, name, 119, 701, 296, { font, size: 10 });
+  drawFit(page, nric, 119, 684.3, 165, { font, size: 10 });
 
   const addressLines = wrapText(upperMultiline(data.address), font, 8.6, 302, 4);
   addressLines.forEach((line, index) => {
-    drawFit(page, line, 119, 668.5 - index * 13, 302, { font, size: 8.6, clear: true });
+    drawFit(page, line, 119, 668.5 - index * 13, 302, { font, size: 8.6 });
   });
 
-  drawFit(page, upper(data.homePhone), 494, 700, 80, { font, size: 8.8, clear: true });
-  drawFit(page, upper(data.officePhone), 494, 687, 80, { font, size: 8.8, clear: true });
-  drawFit(page, upper(data.mobilePhone), 494, 674, 80, { font, size: 8.8, clear: true });
+  drawFit(page, upper(data.homePhone), 494, 700, 80, { font, size: 8.8 });
+  drawFit(page, upper(data.officePhone), 494, 687, 80, { font, size: 8.8 });
+  drawFit(page, upper(data.mobilePhone), 494, 674, 80, { font, size: 8.8 });
 
   if (data.clearCustomerSignature) {
     drawDashedLine(page, 32, 173.5, 198, 1);
@@ -350,15 +389,15 @@ function drawCustomer(page, font, data) {
 }
 
 function drawVehicle(page, font, data) {
-  drawFit(page, upper(data.model), 119, 598.6, 218, { font, size: 9.2, clear: true });
-  drawFit(page, upper(data.variant), 119, 585.7, 218, { font, size: 9.2, clear: true });
-  drawFit(page, upper(data.colour), 119, 573, 218, { font, size: 9.2, clear: true });
-  drawFit(page, upper(data.estimatedDelivery), 119, 560.2, 218, { font, size: 9.2, clear: true });
+  drawFit(page, upper(data.model), 119, 598.6, 218, { font, size: 9.2 });
+  drawFit(page, upper(data.variant), 119, 585.7, 218, { font, size: 9.2 });
+  drawFit(page, upper(data.colour), 119, 573, 218, { font, size: 9.2 });
+  drawFit(page, upper(data.estimatedDelivery), 119, 560.2, 218, { font, size: 9.2 });
 
-  drawFit(page, upper(data.salesType), 438, 598.6, 134, { font, size: 8.9, clear: true });
-  drawFit(page, upper(data.chassisNo), 438, 585.7, 134, { font, size: 8.9, clear: true });
-  drawFit(page, upper(data.engineNo), 438, 573, 134, { font, size: 8.9, clear: true });
-  drawFit(page, upper(data.referenceDealer), 438, 560.2, 134, { font, size: 8.9, clear: true });
+  drawFit(page, upper(data.salesType), 438, 598.6, 134, { font, size: 8.9 });
+  drawFit(page, upper(data.chassisNo), 438, 585.7, 134, { font, size: 8.9 });
+  drawFit(page, upper(data.engineNo), 438, 573, 134, { font, size: 8.9 });
+  drawFit(page, upper(data.referenceDealer), 438, 560.2, 134, { font, size: 8.9 });
 }
 
 function drawPricing(page, font, bold, data, pricing) {
@@ -374,22 +413,22 @@ function drawPricing(page, font, bold, data, pricing) {
   drawMoney(page, font, valueOrNull(data.insurance), priceRows.insurance.y);
 
   const ncdText = data.ncd === "" ? "" : `${trimNumber(data.ncd)}%`;
-  drawFit(page, ncdText, 84, 400.8, 66, { font, size: 9.2, align: "center", clear: true });
+  drawFit(page, ncdText, 84, 400.8, 66, { font, size: 9.2, align: "center" });
 
   drawMoney(page, bold, pricing.total, priceRows.totalAmount.y);
   drawMoney(page, bold, pricing.bookingFeePaid, priceRows.bookingFeePaid.y);
   drawMoney(page, bold, pricing.outstanding, priceRows.totalOutstanding.y);
 
   const bookingText = pricing.bookingFeePaid === null ? "0.00" : formatMoney(pricing.bookingFeePaid);
-  drawFit(page, bookingText, 127, 293.8, 38, { font, size: 8.8, align: "right", clear: true });
-  drawFit(page, upper(data.paymentRef), 341, 293.8, 104, { font, size: 8.8, align: "center", clear: true });
+  drawFit(page, bookingText, 127, 293.8, 38, { font, size: 8.8, align: "right" });
+  drawFit(page, upper(data.paymentRef), 341, 293.8, 104, { font, size: 8.8, align: "center" });
 }
 
 function drawDealer(page, font, data) {
-  drawFit(page, upper(data.salesAdvisorName), 267, 154.4, 124, { font, size: 7.1, align: "center", clear: true });
-  drawFit(page, upper(data.salesAdvisorNric), 267, 139.2, 124, { font, size: 7.1, align: "center", clear: true });
-  drawFit(page, upper(data.salesManagerName), 453, 154.4, 126, { font, size: 7.1, align: "center", clear: true });
-  drawFit(page, upper(data.salesManagerNric), 453, 139.2, 126, { font, size: 7.1, align: "center", clear: true });
+  drawFit(page, upper(data.salesAdvisorName), 267, 154.4, 124, { font, size: 7.1, align: "center" });
+  drawFit(page, upper(data.salesAdvisorNric), 267, 139.2, 124, { font, size: 7.1, align: "center" });
+  drawFit(page, upper(data.salesManagerName), 453, 154.4, 126, { font, size: 7.1, align: "center" });
+  drawFit(page, upper(data.salesManagerNric), 453, 139.2, 126, { font, size: 7.1, align: "center" });
 }
 
 function setPdfPreview(blob, data) {
@@ -462,7 +501,7 @@ function resolvePricing(data) {
 
 function drawMoney(page, font, value, y) {
   if (value === null || !Number.isFinite(value)) return;
-  drawFit(page, formatMoney(value), 219, y, 120, { font, size: 9.2, align: "right", clear: true });
+  drawFit(page, formatMoney(value), 219, y, 120, { font, size: 9.2, align: "right" });
 }
 
 function cover(page, x, y, width, height) {
@@ -484,6 +523,45 @@ function drawDashedLine(page, x1, y, x2, thickness) {
       start: { x, y },
       end: { x: Math.min(x + dash, x2), y },
       thickness,
+      color: PDFLib.rgb(0, 0, 0),
+    });
+  }
+}
+
+function drawFillLine(page, x1, y, x2, kind = "dot") {
+  if (kind === "double") {
+    drawDoubleFillLine(page, x1, y, x2);
+    return;
+  }
+
+  if (kind === "dash") {
+    drawSegmentedLine(page, x1, y, x2, { dash: 3.2, gap: 2, thickness: 0.55 });
+    return;
+  }
+
+  drawSegmentedLine(page, x1, y, x2, { dash: 1.15, gap: 2.05, thickness: 0.45 });
+}
+
+function drawDoubleFillLine(page, x1, y, x2) {
+  drawSolidLine(page, x1, y, x2, 0.5);
+  drawSolidLine(page, x1, y - 2.0, x2, 0.5);
+}
+
+function drawSolidLine(page, x1, y, x2, thickness) {
+  page.drawLine({
+    start: { x: x1, y },
+    end: { x: x2, y },
+    thickness,
+    color: PDFLib.rgb(0, 0, 0),
+  });
+}
+
+function drawSegmentedLine(page, x1, y, x2, options) {
+  for (let x = x1; x < x2; x += options.dash + options.gap) {
+    page.drawLine({
+      start: { x, y },
+      end: { x: Math.min(x + options.dash, x2), y },
+      thickness: options.thickness,
       color: PDFLib.rgb(0, 0, 0),
     });
   }

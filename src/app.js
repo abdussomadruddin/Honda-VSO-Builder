@@ -246,6 +246,7 @@ function bindEvents() {
   });
 
   document.getElementById("generateBtn").addEventListener("click", generatePdf);
+  document.getElementById("mobileGenerateBtn").addEventListener("click", generatePdf);
 }
 
 function fillForm(data) {
@@ -281,9 +282,11 @@ function refreshDerivedViews() {
 
 async function generatePdf() {
   const generateBtn = document.getElementById("generateBtn");
+  const mobileGenerateBtn = document.getElementById("mobileGenerateBtn");
   const data = getFormData();
 
   generateBtn.disabled = true;
+  mobileGenerateBtn.disabled = true;
   setStatus("Sedang jana PDF...", false);
 
   try {
@@ -312,6 +315,7 @@ async function generatePdf() {
     alert(error.message || "PDF gagal dijana. Semak template PDF atau cuba semula.");
   } finally {
     generateBtn.disabled = false;
+    mobileGenerateBtn.disabled = false;
   }
 }
 
@@ -457,6 +461,12 @@ function setPdfPreview(blob, data) {
   downloadBtn.download = `${buildFileName(data)}.pdf`;
   downloadBtn.classList.remove("disabled");
   downloadBtn.removeAttribute("aria-disabled");
+
+  const mobileDownloadBtn = document.getElementById("mobileDownloadBtn");
+  mobileDownloadBtn.href = currentPdfUrl;
+  mobileDownloadBtn.download = `${buildFileName(data)}.pdf`;
+  mobileDownloadBtn.classList.remove("disabled");
+  mobileDownloadBtn.removeAttribute("aria-disabled");
 }
 
 function resetPdfPreview() {
@@ -473,6 +483,12 @@ function resetPdfPreview() {
   downloadBtn.removeAttribute("download");
   downloadBtn.classList.add("disabled");
   downloadBtn.setAttribute("aria-disabled", "true");
+
+  const mobileDownloadBtn = document.getElementById("mobileDownloadBtn");
+  mobileDownloadBtn.removeAttribute("href");
+  mobileDownloadBtn.removeAttribute("download");
+  mobileDownloadBtn.classList.add("disabled");
+  mobileDownloadBtn.setAttribute("aria-disabled", "true");
 }
 
 function setStatus(message, ready) {
